@@ -1,3 +1,4 @@
+using friend_tracker_api.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace friend_tracker_api.Controllers;

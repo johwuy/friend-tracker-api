@@ -1,4 +1,4 @@
-namespace friend_tracker_api;
+namespace friend_tracker_api.Model;
 
 public class WeatherForecast
 {
