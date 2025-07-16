@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace friend_tracker_api.Model;
 
@@ -19,6 +20,8 @@ public class Contact
     public DateTime? Birthday { get; set; }
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public RelationshipStatus? Relationship { get; set; }
 
 }
