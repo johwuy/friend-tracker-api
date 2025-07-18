@@ -11,7 +11,7 @@ builder.Services.AddOpenApi();
 
 const string dbName = "ApplicatonDb";
 var connectionString = builder.Configuration.GetConnectionString(dbName) ?? throw new InvalidOperationException($"Connection string '{dbName}' not found");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite());
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
 var app = builder.Build();
 
