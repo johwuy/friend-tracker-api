@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-const string dbName = "ApplicatonDb";
+const string dbName = "ApplicationDb";
 var connectionString = builder.Configuration.GetConnectionString(dbName) ?? throw new InvalidOperationException($"Connection string '{dbName}' not found");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
