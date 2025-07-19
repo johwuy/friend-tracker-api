@@ -21,4 +21,16 @@ public class ContactsController : ControllerBase
     {
         return await _context.Contacts.ToArrayAsync();
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetContact(Guid id)
+    {
+        var contact = await _context.Contacts.FindAsync(id);
+
+        if (contact is null)
+        {
+            return NotFound();
+        }
+        return Ok(contact);
+    }
 }
