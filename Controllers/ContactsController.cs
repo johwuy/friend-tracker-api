@@ -41,4 +41,17 @@ public class ContactsController : ControllerBase
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteContact(Guid id)
+    {
+        var contact = await _context.Contacts.FindAsync(id);
+        if (contact is null)
+        {
+            return NotFound();
+        }
+        _context.Contacts.Remove(contact);
+        await _context.SaveChangesAsync();
+        return Ok(contact);
+    }
 }
