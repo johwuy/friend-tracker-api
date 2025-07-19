@@ -15,4 +15,10 @@ public class ContactsController : ControllerBase
         _context = context;
         _logging = logging;
     }
+
+    [HttpGet]
+    public async Task<ActionResult<Contact[]>> GetAllContacts()
+    {
+        return await _context.Contacts.ToArrayAsync();
+    }
 }
