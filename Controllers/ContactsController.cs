@@ -33,4 +33,12 @@ public class ContactsController : ControllerBase
         }
         return Ok(contact);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<Contact>> AddContact(Contact contact)
+    {
+        await _context.Contacts.AddAsync(contact);
+        await _context.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
+    }
 }
