@@ -1,4 +1,5 @@
 using friend_tracker_api.Model;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,5 +54,30 @@ public class ContactsController : ControllerBase
         _context.Contacts.Remove(contact);
         await _context.SaveChangesAsync();
         return Ok(contact);
+    }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchContact(Guid id, JsonPatchDocument<Contact> patchDoc)
+    {
+        if (patchDoc is null)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var contact = await _context.Contacts.FindAsync(id);
+
+        if (contact is null)
+        {
+            return NotFound();
+        }
+
+        patchDoc.ApplyTo(contact, ModelState);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        _context.Contacts.Update(contact);
+        await _context.SaveChangesAsync();
+        return AcceptedAtAction(nameof(GetContact), new { id = contact.Id }, contact);
     }
 }
