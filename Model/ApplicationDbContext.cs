@@ -8,6 +8,13 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
-    
+
     public DbSet<Contact> Contacts { get; set; }
+    public DbSet<Note> Notes { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Note>().HasKey(n => n.ContactId);
+        base.OnModelCreating(modelBuilder);
+    }
 }
