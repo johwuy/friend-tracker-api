@@ -23,7 +23,8 @@
 	// }
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "dotnet restore",
+	// CLU isn't part of `dotnet restore`
+	"postCreateCommand": "dotnet restore && dotnet tool install --global dotnet-ef",
 
 	// Configure tool-specific properties.
 	"customizations": {
