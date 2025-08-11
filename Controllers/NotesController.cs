@@ -23,13 +23,21 @@ public class NotesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetNote(Guid id)
     {
-        var note = await _context.Notes.FindAsync(id);
+        var existing = await _context.Notes.FindAsync(id);
 
-        if (note is null)
+        if (existing is null)
         {
-            return NotFound();
+            var note = new Note
+            {
+                ContactId = id,
+                Content = String.Empty
+            };
+            
+            await _context.Notes.AddAsync(note);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetNote), new { id = note.ContactId }, existing);
         }
-        return Ok(note);
+        return Ok(existing);
     }
 
     [HttpPut("{id}")]
