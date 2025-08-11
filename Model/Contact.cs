@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace friend_tracker_api.Model;
 
@@ -27,4 +28,6 @@ public class Contact
     [JsonIgnore]
     public Note? Note { get; set; }
 
+    [JsonIgnore]
+    public ICollection<Interaction> Interactions { get; set; } = new List<Interaction>();
 }
