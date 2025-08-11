@@ -24,6 +24,7 @@ public class Contact
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public RelationshipStatus? Relationship { get; set; }
 
+    [JsonIgnore]
     public Note? Note { get; set; }
 
 }
