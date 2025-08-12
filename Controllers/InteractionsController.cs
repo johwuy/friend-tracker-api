@@ -14,6 +14,11 @@ public class InteractionsController : ControllerBase
         public required string Content { get; set; }
         public required DateTime Date { get; set; }
     }
+    public sealed class InteractionPostDto
+    {
+        public required string Content { get; set; }
+        public required DateTime Date { get; set; }
+    }
     private readonly ApplicationDbContext _context;
     private readonly ILogger<ContactsController> _logging;
     public InteractionsController(ApplicationDbContext context, ILogger<ContactsController> logging)
@@ -43,5 +48,27 @@ public class InteractionsController : ControllerBase
                             }).ToListAsync();
 
         return Ok(interactions);
+    }
+
+    [HttpGet("{contactId:guid}/{interactionId:guid}")]
+    public async Task<IActionResult> GetInteraction(Guid contactId, Guid interactionId)
+    {
+        var contactExists = await _context.Contacts.AsNoTracking().AnyAsync(c => c.Id == contactId);
+        if (!contactExists)
+        {
+            return NotFound("Contact doesn't exist");
+        }
+
+        var interactionDto = await _context.Interactions
+            .AsNoTracking()
+            .Where(i => i.ContactId == contactId && i.Id == interactionId)
+            .Select(i => new InteractionGetDto
+            {
+                Id = i.Id,
+                Content = i.Content,
+                Date = i.Date
+            })
+            .SingleOrDefaultAsync();
+        return Ok(interactionDto);
     }
 }
