@@ -21,4 +21,27 @@ public class InteractionsController : ControllerBase
         _context = context;
         _logging = logging;
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetInteractions(Guid id)
+    {
+        var contactExists = await _context.Contacts.AsNoTracking().AnyAsync(c => c.Id == id);
+        if (!contactExists)
+        {
+            return NotFound("Contact doesn't exist");
+        }
+
+        var interactions = await _context.Interactions
+                            .AsNoTracking()
+                            .Where(i => i.ContactId == id)
+                            .OrderByDescending(i => i.Date)
+                            .Select(i => new InteractionGetDto
+                            {
+                                Id = i.Id,
+                                Content = i.Content,
+                                Date = i.Date
+                            }).ToListAsync();
+
+        return Ok(interactions);
+    }
 }
