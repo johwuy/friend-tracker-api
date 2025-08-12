@@ -20,8 +20,8 @@ public class InteractionsController : ControllerBase
         public required DateTime Date { get; set; }
     }
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<ContactsController> _logging;
-    public InteractionsController(ApplicationDbContext context, ILogger<ContactsController> logging)
+    private readonly ILogger<InteractionsController> _logging;
+    public InteractionsController(ApplicationDbContext context, ILogger<InteractionsController> logging)
     {
         _context = context;
         _logging = logging;
