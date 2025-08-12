@@ -71,4 +71,23 @@ public class InteractionsController : ControllerBase
             .SingleOrDefaultAsync();
         return Ok(interactionDto);
     }
+
+    [HttpPost("{contactId:guid}")]
+    public async Task<IActionResult> AddInteraction(Guid contactId, [FromBody] InteractionPostDto dto)
+    {
+        var contactExists = await _context.Contacts.AsNoTracking().AnyAsync(c => c.Id == contactId);
+        if (!contactExists)
+        {
+            return NotFound("Contact doesn't exist");
+        }
+        var interaction = new Interaction
+        {
+            Content = dto.Content,
+            Date = dto.Date,
+            ContactId = contactId
+        };
+        await _context.Interactions.AddAsync(interaction);
+        await _context.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetInteraction), new { contactId = interaction.ContactId, interactionId = interaction.Id }, interaction);
+    }
 }
