@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<Note> Notes { get; set; }
+    public DbSet<Interaction> Interactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
