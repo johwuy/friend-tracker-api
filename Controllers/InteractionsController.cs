@@ -90,4 +90,27 @@ public class InteractionsController : ControllerBase
         await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(GetInteraction), new { contactId = interaction.ContactId, interactionId = interaction.Id }, interaction);
     }
+
+    [HttpDelete("{contactId:guid}/{interactionId:guid}")]
+    public async Task<IActionResult> DeleteInteraction(Guid contactId, Guid interactionId)
+    {
+        var contactExists = await _context.Contacts.AsNoTracking().AnyAsync(c => c.Id == contactId);
+        if (!contactExists)
+        {
+            return NotFound("Contact doesn't exist");
+        }
+        var interaction = await _context.Interactions
+            .AsNoTracking()
+            .Where(i => i.ContactId == contactId && i.Id == interactionId)
+            .SingleOrDefaultAsync();
+
+        if (interaction is null)
+        {
+            return NotFound();
+        }
+
+        _context.Interactions.Remove(interaction);
+        await _context.SaveChangesAsync();
+        return Ok(interaction);
+    }
 }
