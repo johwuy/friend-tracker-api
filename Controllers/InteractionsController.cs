@@ -40,12 +40,7 @@ public class InteractionsController : ControllerBase
                             .AsNoTracking()
                             .Where(i => i.ContactId == contactId)
                             .OrderByDescending(i => i.Date)
-                            .Select(i => new InteractionGetDto
-                            {
-                                Id = i.Id,
-                                Content = i.Content,
-                                Date = i.Date
-                            }).ToListAsync();
+                            .ToListAsync();
 
         return Ok(interactions);
     }
@@ -62,12 +57,6 @@ public class InteractionsController : ControllerBase
         var interactionDto = await _context.Interactions
             .AsNoTracking()
             .Where(i => i.ContactId == contactId && i.Id == interactionId)
-            .Select(i => new InteractionGetDto
-            {
-                Id = i.Id,
-                Content = i.Content,
-                Date = i.Date
-            })
             .SingleOrDefaultAsync();
         return Ok(interactionDto);
     }
