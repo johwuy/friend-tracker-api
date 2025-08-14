@@ -8,13 +8,7 @@ namespace friend_tracker_api.Controllers;
 [Route("api/[controller]")]
 public class InteractionsController : ControllerBase
 {
-    public sealed class InteractionGetDto
-    {
-        public required Guid Id { get; set; }
-        public required string Content { get; set; }
-        public required DateTime Date { get; set; }
-    }
-    public sealed class InteractionPostDto
+    public sealed class InteractionBodyDto
     {
         public required string Content { get; set; }
         public required DateTime Date { get; set; }
@@ -62,7 +56,7 @@ public class InteractionsController : ControllerBase
     }
 
     [HttpPost("{contactId:guid}")]
-    public async Task<IActionResult> AddInteraction(Guid contactId, [FromBody] InteractionPostDto dto)
+    public async Task<IActionResult> AddInteraction(Guid contactId, [FromBody] InteractionBodyDto dto)
     {
         var contactExists = await _context.Contacts.AsNoTracking().AnyAsync(c => c.Id == contactId);
         if (!contactExists)
@@ -104,7 +98,7 @@ public class InteractionsController : ControllerBase
     }
 
     [HttpPut("{contactId:guid}/{interactionId:guid}")]
-    public async Task<IActionResult> UpdateInteraction(Guid contactId, Guid interactionId, [FromBody] InteractionPostDto dto)
+    public async Task<IActionResult> UpdateInteraction(Guid contactId, Guid interactionId, [FromBody] InteractionBodyDto dto)
     {
         var contactExists = await _context.Contacts.AsNoTracking().AnyAsync(c => c.Id == contactId);
         if (!contactExists)
